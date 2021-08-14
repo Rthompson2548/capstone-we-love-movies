@@ -1,46 +1,43 @@
-const service = require("./movies.service");
+const service = require('./movies.service')
+const asyncErrorBoundary = require('../errors/asyncErrorBoundary')
 
-// check if the given movie id is correct
-async function hasValidMovieId(req, res, next) {
-  const { movieId } = req.params;
-  const foundMovie = await service.read(Number(movieId));
-
-  if (foundMovie) {
-    res.locals.movie = foundMovie;
-    return next();
-  }
-  return next({ status: 404, message: "Movie cannot be found." });
+async function list(req, res, next) {
+    const isShowing = req.query.is_showing
+    if (isShowing) {
+        res.json({ data: await service.listShowing() })
+    } else {
+        res.json({ data: await service.list() })
+    }
 }
 
-// list all movies that are being shown using parameters
-async function list(req, res) {
-  if (req.query.is_showing) {
-    res.json({ data: await service.list(Boolean(is_showing)) });
-  }
+async function listTheaters(req, res, next) {
+    const movieId = req.params.movieId
+    res.json({ data: await service.listTheaters(movieId)})
 }
 
-// list a single movie
-async function read(req, res) {
-  res.json({ data: res.locals.movie });
-}
- 
-// list all theaters showing a given movie
-async function listTheatersForMovie(req, res) {
-  res.json({
-    data: await service.listTheatersForMovie(res.locals.movie.movie_id),
-  });
+async function listReviews(req, res, next) {
+    const movieId = req.params.movieId
+    const result = await service.listReviews(movieId)
+    res.json({ data: result })
 }
 
-// list reviews for a given movie
-async function listMovieReviews(req, res) {
-  res.json({
-    data: await service.listMovieReviews(res.locals.movie.movie_id),
-  });
+async function read(req, res, next) {
+    res.json({ data: res.locals.movie })
+}
+
+async function movieExists(req, res, next) {
+    const movie = await service.read(req.params.movieId)
+    if (movie) {
+        res.locals.movie = movie
+        console.log(movie) 
+        return next()
+    }
+    next({ status: 404, message: 'Movie cannot be found' })
 }
 
 module.exports = {
-  list,
-  read: [hasValidMovieId, read],
-  listTheatersForMovie,
-  listMovieReviews,
-};
+    list: [asyncErrorBoundary(list)],
+    listTheaters: [asyncErrorBoundary(movieExists), asyncErrorBoundary(listTheaters)],
+    listReviews: [asyncErrorBoundary(movieExists), asyncErrorBoundary(listReviews)],
+    read: [asyncErrorBoundary(movieExists), asyncErrorBoundary(read)]
+}
