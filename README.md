@@ -2,11 +2,11 @@
 ### Built using Express, PostSQL, and Knex
 
 ## To Run Server
-### 1. Fork / clone this repo
-### 2. cd into project folder
-### 3. Run npm install to install project dependencies.
-### 4. Run npm run start:dev to start your server in development mode.
-### 5. Or, run npm start.
+#### 1. Fork / clone this repo
+#### 2. cd into project folder
+#### 3. Run npm install to install project dependencies.
+#### 4. Run npm run start:dev to start your server in development mode.
+#### 5. Or, run npm start.
 
 ## Endpoints to Test
 * GET /movies/?is_showing=true for movies currently in theaters.
@@ -17,7 +17,7 @@
 * GET /theaters for list of all theaters
 
 ## Prompt
-### You've been hired on as a back end developer for a new startup called WeLoveMovies! As another developer works on the design and front end experience, you have been tasked with setting up a database and building out specific routes so that users can gain access to data about movies, theaters, and reviews.
+#### You've been hired on as a back end developer for a new startup called WeLoveMovies! As another developer works on the design and front end experience, you have been tasked with setting up a database and building out specific routes so that users can gain access to data about movies, theaters, and reviews.
 
 ## Skills Used
 * Ability to both build complex servers and access data through a database.
