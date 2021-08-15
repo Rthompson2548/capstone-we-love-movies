@@ -16,6 +16,6 @@ function mapProperties(configuration) {
     }
     return data;
   };
-}
+} 
 
 module.exports = mapProperties;

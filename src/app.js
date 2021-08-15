@@ -11,7 +11,7 @@ app.use(express.json());
 app.use("/movies", moviesRouter);
 app.use("/reviews", reviewsRouter);
 app.use("/theaters", theatersRouter);
-
+ 
 app.use((req, res, next) => {
   next({ status: 404, message: "That page doesn't exist." });
 });

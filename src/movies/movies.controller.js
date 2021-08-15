@@ -2,9 +2,11 @@ const service = require('./movies.service')
 const asyncErrorBoundary = require('../errors/asyncErrorBoundary')
 
 async function list(req, res, next) {
+    // why do we use req.query in this function if 
+    // it is used in a router that only goes to '/'?
     const isShowing = req.query.is_showing
     if (isShowing) {
-        res.json({ data: await service.listMovie() })
+       res.json({ data: await service.listMovie() })
     } else {
         res.json({ data: await service.list() })
     }
