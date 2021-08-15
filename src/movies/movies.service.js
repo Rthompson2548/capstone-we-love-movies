@@ -31,19 +31,19 @@ function list() {
 }
 
 function listMovie() {
-    return knex('movies')
-        .join('movies_theaters', 'movies.movie_id', 'movies_theaters.movie_id')
-        .select('movies.*')
-        .where({ 'movies_theaters.is_showing': true })
-        .groupBy('movies.movie_id')
+    return knex('movies as m')
+        .join('movies_theaters as mt', 'm.movie_id', 'mt.movie_id')
+        .select('m.*')
+        .where({ 'mt.is_showing': true })
+        .groupBy('m.movie_id')
 }
 
 function listMovieTheaters() {
-    return knex('movies_theaters')
-        .join('movies', 'movies.movie_id', 'movies_theaters.movie_id')
-        .join('theaters', 'movies_theaters.theater_id', 'theaters.theater_id')
-        .select('theaters.*')
-        .groupBy('theaters.theater_id')
+    return knex('movies_theaters as mt')
+        .join('movies as m', 'm.movie_id', 'mt.movie_id')
+        .join('theaters as t', 'mt.theater_id', 't.theater_id')
+        .select('t.*')
+        .groupBy('t.theater_id')
 }
 
 function listMovieReviews(movieId) {
