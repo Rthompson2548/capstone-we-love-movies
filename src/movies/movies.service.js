@@ -30,7 +30,7 @@ function list() {
         .groupBy('movies.movie_id')
 }
 
-function listShowing() {
+function listMovie() {
     return knex('movies')
         .join('movies_theaters', 'movies.movie_id', 'movies_theaters.movie_id')
         .select('movies.*')
@@ -38,7 +38,7 @@ function listShowing() {
         .groupBy('movies.movie_id')
 }
 
-function listTheaters() {
+function listMovieTheaters() {
     return knex('movies_theaters')
         .join('movies', 'movies.movie_id', 'movies_theaters.movie_id')
         .join('theaters', 'movies_theaters.theater_id', 'theaters.theater_id')
@@ -46,7 +46,7 @@ function listTheaters() {
         .groupBy('theaters.theater_id')
 }
 
-function listReviews(movieId) {
+function listMovieReviews(movieId) {
     console.log(movieId)
     return knex('movies')
         .join('reviews', 'movies.movie_id', 'reviews.movie_id')
@@ -74,8 +74,8 @@ function read(movie_id) {
 
 module.exports = {
     list,
-    listShowing,
+    listMovie,
     read,
-    listTheaters,
-    listReviews
+    listMovieTheaters,
+    listMovieReviews
 }

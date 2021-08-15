@@ -14,12 +14,12 @@ router
 
 router
     .route('/:movieId/theaters')
-    .get(controller.listTheaters)
+    .get(controller.listMovieTheaters)
     .all(methodNotAllowed)
 
 router
     .route('/:movieId/reviews')
-    .get(controller.listReviews)
+    .get(controller.listMovieReviews)
     .all(methodNotAllowed)
 
 module.exports = router

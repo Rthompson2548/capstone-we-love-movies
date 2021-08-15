@@ -2,11 +2,11 @@
 const service = require("./reviews.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
-async function reviewIdExists(req, res, next) {
+async function reviewIsValid(req, res, next) {
   const { reviewId } = req.params;
-  const foundReview = await service.read(reviewId);
-  if (foundReview) {
-    res.locals.review = foundReview;
+  const matchingReview = await service.read(reviewId);
+  if (matchingReview) {
+    res.locals.review = matchingReview;
     return next();
   }
   return next({ status: 404, message: "Review cannot be found." });
@@ -20,13 +20,13 @@ async function destroy(req, res) {
 async function update(req, res) {
   const updatedReview = { ...res.locals.review, ...req.body.data };
   await service.update(updatedReview);
-  const returnData = await service.getReviewWithCritic(
+  const reviewToReturn = await service.getReviewWithCritic(
     res.locals.review.review_id
   );
-  res.json({ data: returnData });
+  res.json({ data: reviewToReturn });
 }
 
 module.exports = {
-  delete: [asyncErrorBoundary(reviewIdExists), asyncErrorBoundary(destroy)],
-  update: [asyncErrorBoundary(reviewIdExists), asyncErrorBoundary(update)],
-};
+  delete: [asyncErrorBoundary(reviewIsValid), asyncErrorBoundary(destroy)],
+  update: [asyncErrorBoundary(reviewIsValid), asyncErrorBoundary(update)],
+}; 
